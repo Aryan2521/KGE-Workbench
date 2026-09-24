@@ -11,11 +11,11 @@ How can deterministic and uncertainty-aware knowledge graph embedding models be 
 ## Implemented scope
 
 - A trusted local plugin registry for models, datasets, and evaluator/benchmark modules.
-- Direct adapters for `TransE` and the newer `RFMTransE` class in `Thesis new`.
+- Direct adapters for the included `TransE` and `RFMTransE` reference models.
 - Capability-aware evaluation for lower-is-better and higher-is-better model scores.
 - Manifest-generated model and dataset parameter controls in the web interface.
 - Capability/feature compatibility checks that show only valid model-dataset-evaluator combinations.
-- Synthetic, CoDEx-S/M, FB15k, FB15k-237, WN18RR, and YAGO3-10 datasets already present in the thesis directory.
+- Synthetic, CoDEx-S/M, FB15k, FB15k-237, WN18RR, and YAGO3-10 dataset integrations.
 - Correct filtered MR, MRR, and Hits@1/3/10.
 - Precision, recall, and F1 using a validation-derived threshold.
 - MSE, MAE, ECE, Brier score, and soft-label negative log-likelihood.
@@ -36,7 +36,7 @@ The included benchmark datasets do not contain ground-truth fact confidence valu
 
 ## Setup
 
-Python 3.11 or newer is recommended. The current machine already has the required packages.
+Python 3.11 or newer is recommended.
 
 ```bash
 python3 -m venv .venv
@@ -44,23 +44,14 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Point the application at the thesis code:
+Set `KGE_THESIS_DIR` to the directory containing the model implementation files, then start the application:
 
 ```bash
-export KGE_THESIS_DIR="/absolute/path/to/Thesis new"
+export KGE_THESIS_DIR="../model-source"
 python app.py
 ```
 
-Open `http://127.0.0.1:5001`. The server intentionally listens only on the local machine.
-
-Optional paths:
-
-```bash
-export KGE_DATABASE_PATH="/absolute/path/to/benchmark_results.db"
-export KGE_ARTIFACT_DIR="/absolute/path/to/artifacts"
-```
-
-If `KGE_THESIS_DIR` is not set, the application uses `~/Documents/Thesis/Thesis new`. It validates `transe.py`, `RFM_TransE.py`, and `utils.py` before accepting a run, and records that exact source path and its SHA-256 fingerprint with every experiment.
+Open `http://127.0.0.1:5001`. The server intentionally listens only on the local machine. The model source directory must contain `transe.py`, `RFM_TransE.py`, and `utils.py`. ReproKGE validates these files before accepting a run and records a source fingerprint for reproducibility.
 
 ## Recommended evaluation procedure
 
@@ -79,7 +70,7 @@ For large datasets, full filtered ranking can take a long time because every tes
 app.py                 Local Flask API and background run manager
 benchmark_runner.py    Training, corrected metrics, and structured result writer
 plugin_registry.py     Model/dataset/evaluator discovery, compatibility, schemas, and fingerprints
-builtin_plugins.py     Adapters for Thesis new models and existing datasets
+builtin_plugins.py     Adapters for the included reference models and datasets
 builtin_evaluators.py  Built-in link prediction, classification, and calibration adapters
 plugins/models/        Installed trusted model plugins
 plugins/datasets/      Installed trusted dataset plugins
