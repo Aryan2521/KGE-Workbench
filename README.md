@@ -47,7 +47,7 @@ pip install -r requirements.txt
 Point the application at the thesis code:
 
 ```bash
-export KGE_THESIS_DIR="/Users/aryan/Documents/Thesis/Thesis new"
+export KGE_THESIS_DIR="/absolute/path/to/Thesis new"
 python app.py
 ```
 
