@@ -1,0 +1,9 @@
+{
+  "id": "example_dataset",
+  "name": "Example TSV dataset",
+  "version": "1.0.0",
+  "description": "Head, relation and tail labels stored in TSV split files.",
+  "entrypoint": "adapter.py:DatasetAdapter",
+  "features": ["triples", "entity_ids", "relation_ids", "train_split", "validation_split", "test_split"],
+  "parameters": {}
+}

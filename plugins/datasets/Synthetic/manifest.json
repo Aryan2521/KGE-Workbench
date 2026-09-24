@@ -1,0 +1,11 @@
+{
+  "id": "Synthetic",
+  "name": "Synthetic family graph",
+  "version": "1.0",
+  "description": "Deterministic family graph for fast smoke tests.",
+  "entrypoint": "builtin_plugins:SyntheticDatasetAdapter",
+  "features": ["triples", "entity_ids", "relation_ids", "train_split", "validation_split", "test_split"],
+  "parameters": {
+    "synthetic_families": {"label": "Number of families", "type": "integer", "default": 20, "minimum": 2, "maximum": 10000}
+  }
+}

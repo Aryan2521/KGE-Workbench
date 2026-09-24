@@ -1,0 +1,15 @@
+{
+  "id": "triple_classification",
+  "name": "Triple classification",
+  "version": "1.0.0",
+  "description": "Classifies positive and corrupted triples using a validation-derived threshold.",
+  "entrypoint": "builtin_evaluators:TripleClassificationEvaluator",
+  "required_model_capabilities": ["score_triples"],
+  "required_dataset_features": ["triples", "entity_ids", "validation_split", "test_split"],
+  "metrics": {
+    "precision": {"label": "Precision", "direction": "higher"},
+    "recall": {"label": "Recall", "direction": "higher"},
+    "f1_score": {"label": "F1", "direction": "higher"}
+  },
+  "parameters": {}
+}

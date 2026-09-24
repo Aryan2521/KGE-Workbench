@@ -1,0 +1,1 @@
+{"id":"CoDEx-M","name":"CoDEx-M","version":"thesis-new-1","description":"Medium-scale CoDEx benchmark.","entrypoint":"builtin_plugins:ThesisDatasetAdapter","thesis_files":["utils.py"],"features":["triples","entity_ids","relation_ids","train_split","validation_split","test_split"],"parameters":{}}

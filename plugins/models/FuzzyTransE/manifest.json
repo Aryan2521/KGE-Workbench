@@ -1,0 +1,18 @@
+{
+  "id": "FuzzyTransE",
+  "name": "RFM-TransE (Thesis new)",
+  "version": "thesis-new-1",
+  "description": "Relation-specific fuzzy membership knowledge graph embedding model",
+  "entrypoint": "builtin_plugins:ThesisModelAdapter",
+  "source_file": "RFM_TransE.py",
+  "source_class": "RFMTransE",
+  "thesis_files": ["RFM_TransE.py"],
+  "score_direction": "lower",
+  "capabilities": {"training": true, "score_triples": true, "predict_confidence": true, "save_checkpoint": true},
+  "parameters": {
+    "membership_function": {"label": "Membership function", "type": "string", "default": "exponential", "enum": ["exponential", "sigmoid", "gaussian"]},
+    "fuzziness_type": {"label": "Fuzzy parameters", "type": "string", "default": "relation-specific", "enum": ["relation-specific"]},
+    "lambda_fuzzy": {"label": "Fuzzy loss weight", "type": "number", "default": 0.1, "minimum": 0, "maximum": 1000, "step": 0.01},
+    "fuzzy_bias": {"label": "Fuzzy bias", "type": "number", "default": 0, "minimum": -1000, "maximum": 1000, "step": 0.01}
+  }
+}

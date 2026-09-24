@@ -1,0 +1,13 @@
+{
+  "id": "TransE",
+  "name": "TransE baseline",
+  "version": "thesis-new-1",
+  "description": "Distance-based knowledge graph embedding baseline.",
+  "entrypoint": "builtin_plugins:ThesisModelAdapter",
+  "source_file": "transe.py",
+  "source_class": "TransE",
+  "thesis_files": ["transe.py"],
+  "score_direction": "lower",
+  "capabilities": {"training": true, "score_triples": true, "predict_confidence": true, "save_checkpoint": true},
+  "parameters": {}
+}

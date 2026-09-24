@@ -1,0 +1,1 @@
+{"id":"YAGO3-10","name":"YAGO3-10","version":"thesis-new-1","description":"Large YAGO-derived benchmark.","entrypoint":"builtin_plugins:ThesisDatasetAdapter","thesis_files":["utils.py"],"features":["triples","entity_ids","relation_ids","train_split","validation_split","test_split"],"parameters":{}}

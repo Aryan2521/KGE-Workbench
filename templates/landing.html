@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Configure reproducible knowledge graph embedding benchmarks and compare their evidence.">
+    <title>ReproKGE | Reproducible KGE Evaluation</title>
+    <link rel="stylesheet" href="/static/landing.css">
+</head>
+<body>
+    <a class="skip-link" href="#landing-content">Skip to main content</a>
+    <main class="landing-shell" id="landing-content">
+        <section class="landing-card" aria-labelledby="landing-title">
+            <header class="landing-header">
+                <div class="landing-brand">
+                    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+                    <span><strong>ReproKGE</strong><small>Evaluation Framework</small></span>
+                </div>
+                <span class="workspace-label">Local research workspace</span>
+            </header>
+
+            <div class="landing-stage">
+                <div class="landing-copy">
+                    <p class="landing-kicker">Reproducible knowledge graph evaluation</p>
+                    <h1 id="landing-title">From model code to <em>defensible evidence.</em></h1>
+                    <p class="landing-intro">Configure reproducible benchmarks, then inspect every metric, comparison and provenance record in one focused workspace.</p>
+                    <div class="landing-actions" aria-label="Choose where to begin">
+                        <a class="landing-action action-primary" href="/experiment">
+                            <span>Configure experiment</span>
+                            <b aria-hidden="true">→</b>
+                        </a>
+                        <a class="landing-action action-secondary" href="/tracking">
+                            <span>Explore tracked runs</span>
+                            <b aria-hidden="true">→</b>
+                        </a>
+                    </div>
+                </div>
+
+                <aside class="evidence-preview" aria-labelledby="preview-title" aria-live="polite" aria-busy="true">
+                    <div class="preview-header">
+                        <div>
+                            <span class="preview-status"><i aria-hidden="true"></i> Recorded evidence</span>
+                            <h2 id="preview-title">Latest completed run</h2>
+                        </div>
+                        <span class="preview-run-id" id="preview-run-id">Loading</span>
+                    </div>
+                    <div class="preview-identity">
+                        <strong id="preview-name">Loading tracked results</strong>
+                        <span id="preview-context">Reading the local experiment database</span>
+                    </div>
+                    <dl class="preview-metrics">
+                        <div><dt>MRR</dt><dd id="preview-mrr">...</dd></div>
+                        <div><dt>Hits@10</dt><dd id="preview-hits">...</dd></div>
+                        <div><dt>ECE</dt><dd id="preview-ece">...</dd></div>
+                    </dl>
+                    <div class="preview-footer">
+                        <span id="preview-protocol">Evaluation protocol</span>
+                        <span id="preview-seed">Fixed seed</span>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+    <script src="/static/landing.js" defer></script>
+</body>
+</html>

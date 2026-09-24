@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReproKGE Evaluation Framework</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="app-page" data-initial-section="{{ initial_section|default('run-section') }}">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app-container">
+    <aside class="sidebar">
+        <a class="sidebar-header sidebar-home-link" href="/" aria-label="Return to ReproKGE home">
+            <div class="logo-icon"></div>
+            <div class="logo-text"><h1>ReproKGE</h1><span>Evaluation Framework</span></div>
+        </a>
+        <nav class="sidebar-nav" role="tablist" aria-label="Research workspace">
+            <button class="nav-item{% if initial_section == 'run-section' %} active{% endif %}" data-section="run-section" role="tab" aria-controls="run-section">Run Experiment</button>
+            <button class="nav-item" data-section="results-section" role="tab" aria-controls="results-section">Run Details</button>
+            <button class="nav-item{% if initial_section == 'tracking-section' %} active{% endif %}" data-section="tracking-section" role="tab" aria-controls="tracking-section">Tracking & Compare</button>
+        </nav>
+        <div class="sidebar-footer">
+            <p>Research prototype</p><span>Reproducible runs only</span>
+        </div>
+    </aside>
+
+    <main class="main-content" id="main-content" tabindex="-1">
+        <header class="top-bar">
+            <div class="page-title-area">
+                <h2 id="current-section-title">{{ page_title|default('Run a real benchmark') }}</h2>
+                <p id="current-section-desc">{{ page_description|default('Execute an installed model plugin with a recorded configuration and fixed seed.') }}</p>
+            </div>
+            <div class="system-status" role="status" aria-live="polite"><span class="status-indicator online" aria-hidden="true"></span><span id="health-label">Checking local service…</span></div>
+        </header>
+
+        <section id="run-section" class="tab-content{% if initial_section == 'run-section' %} active{% endif %}" role="tabpanel">
+            <div class="landing-hero">
+                <div class="hero-copy">
+                    <span class="hero-kicker"><span class="kicker-dot"></span> Extensible knowledge graph evaluation</span>
+                    <h1>Turn model code into <span>evidence you can defend.</span></h1>
+                    <p>Install trusted model and dataset adapters, then run them through one transparent, reproducible pipeline—from training to capability-aware evaluation and provenance.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary hero-primary" id="hero-start" type="button">Configure an experiment <span aria-hidden="true">→</span></button>
+                        <button class="btn btn-quiet" id="hero-tracking" type="button">Explore tracked runs</button>
+                    </div>
+                    <div class="hero-trust-row">
+                        <span><b>Plugin</b> model and dataset registry</span>
+                        <span><b>SHA-256</b> provenance</span>
+                        <span><b>0</b> simulated results</span>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-label="Evaluation pipeline overview">
+                    <div class="visual-glow visual-glow-one"></div>
+                    <div class="visual-glow visual-glow-two"></div>
+                    <div class="pipeline-card">
+                        <div class="pipeline-card-header">
+                            <div><span class="live-dot"></span><strong>Research pipeline</strong></div>
+                            <span class="verified-pill">VERIFIED</span>
+                        </div>
+                        <div class="pipeline-flow">
+                            <div class="pipeline-step active"><span>01</span><div><b>Train</b><small>Installed model adapter</small></div></div>
+                            <div class="pipeline-line"></div>
+                            <div class="pipeline-step"><span>02</span><div><b>Evaluate</b><small>Declared capabilities</small></div></div>
+                            <div class="pipeline-line"></div>
+                            <div class="pipeline-step"><span>03</span><div><b>Track</b><small>Config + fingerprints</small></div></div>
+                        </div>
+                        <div class="pipeline-metrics">
+                            <div><small>RANKING</small><strong>MRR · Hits@K</strong></div>
+                            <div><small>CALIBRATION</small><strong>ECE · Brier</strong></div>
+                            <div><small>PROVENANCE</small><strong>Code · Data · Seed</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="research-overview" aria-labelledby="overview-title">
+                <div class="overview-heading">
+                    <div>
+                        <span class="section-label">LIVE RESEARCH OVERVIEW</span>
+                        <h2 id="overview-title">Your experiment workspace, at a glance.</h2>
+                        <p>Real values from completed runs—no placeholder analytics.</p>
+                    </div>
+                    <div class="overview-actions">
+                        <span class="live-badge"><span></span> Synced locally</span>
+                    </div>
+                </div>
+
+                <div class="overview-metrics" aria-label="Experiment summary metrics">
+                    <article class="overview-metric">
+                        <div class="metric-top"><span class="metric-icon run-icon" aria-hidden="true"></span><span>Total runs</span></div>
+                        <strong id="landing-total-runs">0</strong>
+                        <small id="landing-run-trend">Ready for your first benchmark</small>
+                    </article>
+                    <article class="overview-metric">
+                        <div class="metric-top"><span class="metric-icon check-icon" aria-hidden="true"></span><span>Completed</span></div>
+                        <strong id="landing-completed-runs">0</strong>
+                        <small id="landing-completion-rate">No completed runs yet</small>
+                    </article>
+                    <article class="overview-metric">
+                        <div class="metric-top"><span class="metric-icon rank-icon" aria-hidden="true"></span><span>Best MRR</span></div>
+                        <strong id="landing-best-mrr">—</strong>
+                        <small id="landing-best-model">Awaiting evaluation</small>
+                    </article>
+                    <article class="overview-metric">
+                        <div class="metric-top"><span class="metric-icon data-icon" aria-hidden="true"></span><span>Latest dataset</span></div>
+                        <strong class="metric-text-value" id="landing-last-dataset">—</strong>
+                        <small id="landing-last-run">No recent activity</small>
+                    </article>
+                </div>
+
+                <div class="overview-grid">
+                    <article class="dashboard-panel performance-panel">
+                        <div class="panel-heading">
+                            <div><h3>MRR performance</h3><p>Latest completed experiments</p></div>
+                            <span class="panel-chip">Higher is better</span>
+                        </div>
+                        <div class="run-chart" id="landing-run-chart" aria-label="MRR values for recent completed runs"></div>
+                    </article>
+
+                    <article class="dashboard-panel model-panel">
+                        <div class="panel-heading">
+                            <div><h3>Model coverage</h3><p>Completed run distribution</p></div>
+                        </div>
+                        <div class="model-coverage">
+                            <div class="coverage-ring" id="landing-coverage-ring"><span id="landing-coverage-total">0</span><small>runs</small></div>
+                            <div class="coverage-legend" id="landing-model-legend"></div>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-panel recent-panel">
+                        <div class="panel-heading">
+                            <div><h3>Recent experiments</h3><p>Latest recorded activity</p></div>
+                            <span class="panel-chip neutral">Local database</span>
+                        </div>
+                        <div class="recent-run-list" id="landing-recent-runs"></div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="evidence-bento" aria-labelledby="evidence-title">
+                <div class="bento-heading">
+                    <span class="section-label">ONE WORKFLOW · COMPLETE EVIDENCE</span>
+                    <h2 id="evidence-title">Built around the questions your thesis must answer.</h2>
+                </div>
+                <div class="bento-grid">
+                    <article class="bento-card bento-ranking">
+                        <span class="bento-number">01</span><div><h3>Does it rank correctly?</h3><p>Filtered MR, MRR and Hits@K reveal link-prediction quality under the same split.</p></div>
+                        <div class="mini-rank-list" aria-hidden="true"><span><b>1</b> true entity <i>0.92</i></span><span><b>2</b> candidate <i>0.71</i></span><span><b>3</b> candidate <i>0.43</i></span></div>
+                    </article>
+                    <article class="bento-card bento-calibration">
+                        <span class="bento-number">02</span><div><h3>Can you trust its confidence?</h3><p>ECE, Brier score and NLL make uncertainty measurable instead of anecdotal.</p></div>
+                        <div class="calibration-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </article>
+                    <article class="bento-card bento-provenance">
+                        <span class="bento-number">03</span><div><h3>Can another researcher reproduce it?</h3><p>Configuration, code, data and seed fingerprints travel with every result.</p></div>
+                        <div class="hash-preview"><small>CODE FINGERPRINT</small><code>a1f3c7e9…</code><span>verified</span></div>
+                    </article>
+                    <article class="bento-card bento-compare">
+                        <span class="bento-number">04</span><div><h3>Is the comparison fair?</h3><p>Pair runs under matching protocols and flag differences before interpretation.</p></div>
+                        <div class="compare-preview" aria-hidden="true"><span>TransE</span><i></i><span>FuzzyTransE</span><b>matched</b></div>
+                    </article>
+                </div>
+            </section>
+
+            <div class="protocol-banner" id="benchmark-workspace">
+                <div class="protocol-intro"><span class="protocol-icon" aria-hidden="true"></span><div><strong>Research-grade by default</strong><small>Every result stays traceable to its exact conditions.</small></div></div>
+                <div class="protocol-point"><b>Same splits</b><span>Fair model comparison</span></div>
+                <div class="protocol-point"><b>Fixed seeds</b><span>Repeatable execution</span></div>
+                <div class="protocol-point"><b>Full provenance</b><span>Code and data fingerprints</span></div>
+            </div>
+            <div class="grid-layout">
+                <div class="card glassmorphism col-span-8 run-config-card">
+                    <div class="card-header modern-card-header"><div><span class="step-pill">01 · CONFIGURE</span><h3>Design your experiment</h3><p>Choose a model, dataset and evaluation budget. We record everything else.</p></div><span class="real-run-pill"><span></span>REAL EXECUTION</span></div>
+                    <form id="benchmark-form">
+                        <div class="form-group">
+                            <label for="experiment_name">Experiment name</label>
+                            <input type="text" id="experiment_name" maxlength="160" required placeholder="e.g. FuzzyTransE CoDEx-S seed 42">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-half">
+                                <label for="model_type">Model</label>
+                                <select id="model_type">
+                                    <option value="TransE">Loading installed models…</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-half">
+                                <label for="dataset">Dataset</label>
+                                <select id="dataset">
+                                    <option value="Synthetic">Loading installed datasets…</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="plugin-selection-summary">
+                            <p id="model-plugin-description">Installed model details will appear here.</p>
+                            <p id="dataset-plugin-description">Installed dataset details will appear here.</p>
+                        </div>
+                        <div id="model-plugin-settings" class="plugin-parameter-section hidden"><h4 class="section-subtitle">Model-specific parameters</h4><div id="model-parameter-fields" class="form-row"></div></div>
+                        <div id="dataset-plugin-settings" class="plugin-parameter-section hidden"><h4 class="section-subtitle">Dataset-specific parameters</h4><div id="dataset-parameter-fields" class="form-row"></div></div>
+                        <div class="evaluator-selection-section">
+                            <h4 class="section-subtitle">Benchmarks</h4>
+                            <p class="input-helper-text">Only evaluators compatible with the selected model and dataset can be enabled.</p>
+                            <div id="evaluator-options" class="evaluator-options"></div>
+                            <p id="evaluator-compatibility-message" class="compatibility-message"></p>
+                        </div>
+                        <div id="evaluator-plugin-settings" class="plugin-parameter-section hidden"><h4 class="section-subtitle">Benchmark-specific parameters</h4><div id="evaluator-parameter-fields"></div></div>
+
+                        <details class="advanced-settings">
+                            <summary><span><strong>Advanced experiment settings</strong><small>Reproducibility, evaluation budget, training and uncertainty</small></span></summary>
+                            <div class="advanced-settings-content">
+                        <h4 class="section-subtitle">Reproducibility and evaluation</h4>
+                        <div class="hyperparams-grid compact-grid evaluation-grid">
+                            <div class="param-card"><label class="param-label" for="seed">Random seed</label><input type="number" id="seed" value="42" min="0"></div>
+                            <div class="param-card"><label class="param-label" for="train_fraction">Train fraction</label><input type="number" id="train_fraction" value="1" min="0.000000000001" max="1" step="any"></div>
+                            <div class="param-card"><label class="param-label" for="train_sample_size">Train cap (0 = unlimited)</label><input type="number" id="train_sample_size" value="0" min="0"></div>
+                            <div class="param-card"><label class="param-label" for="validation_fraction">Validation fraction</label><input type="number" id="validation_fraction" value="1" min="0.000000000001" max="1" step="any"></div>
+                            <div class="param-card"><label class="param-label" for="validation_sample_size">Validation cap (0 = unlimited)</label><input type="number" id="validation_sample_size" value="0" min="0"></div>
+                            <div class="param-card"><label class="param-label" for="test_fraction">Test fraction</label><input type="number" id="test_fraction" value="1" min="0.000000000001" max="1" step="any"></div>
+                            <div class="param-card"><label class="param-label" for="test_sample_size">Test cap (0 = unlimited)</label><input type="number" id="test_sample_size" value="0" min="0"></div>
+                            <input type="hidden" id="eval_sample_size" value="0">
+                            <label class="param-card full-evaluation-card" for="full_evaluation">
+                                <span class="toggle-copy"><b>Full evaluation</b><small>Complete validation and test splits</small></span>
+                                <input type="checkbox" id="full_evaluation" checked>
+                                <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+                            </label>
+                        </div>
+
+                        <h4 class="section-subtitle">Training configuration</h4>
+                        <div class="hyperparams-grid compact-grid">
+                            <div class="param-card"><label class="param-label" for="embedding_dimension">Embedding dimension</label><input type="number" id="embedding_dimension" value="50" min="2"></div>
+                            <div class="param-card"><label class="param-label" for="learning_rate">Learning rate</label><div class="stepped-input"><input type="number" id="learning_rate" value="0.01" min="0.00000001" step="any" inputmode="decimal"><div class="stepped-actions"><button type="button" data-learning-step="up" aria-label="Increase learning rate by 0.01">▲</button><button type="button" data-learning-step="down" aria-label="Decrease learning rate by 0.01">▼</button></div></div></div>
+                            <div class="param-card"><label class="param-label" for="batch_size">Batch size</label><input type="number" id="batch_size" value="1024" min="1"></div>
+                            <div class="param-card"><label class="param-label" for="epochs">Epochs</label><input type="number" id="epochs" value="10" min="1"></div>
+                            <div class="param-card"><label class="param-label" for="margin">Margin</label><input type="number" id="margin" value="1.5" min="0" step="0.1"></div>
+                            <div class="param-card"><label class="param-label" for="p_norm">Distance norm</label><select id="p_norm"><option value="1">L1</option><option value="2">L2</option></select></div>
+                        </div>
+
+                        <div id="uncertainty-config" class="fuzzy-config-card">
+                            <h4 class="section-subtitle">Controlled uncertainty protocol</h4>
+                            <p class="input-helper-text">Use the same uncertainty level for paired TransE and FuzzyTransE runs. This controls the soft targets used for calibration evaluation.</p>
+                            <div class="form-row">
+                                <div class="form-group col-half"><label for="uncertainty_level">Controlled uncertainty</label><select id="uncertainty_level"><option value="low">Low: 0.95 / 0.05, no noise</option><option value="medium">Medium: 0.80 / 0.20, 15% noise</option><option value="high">High: 0.60 / 0.40, 35% noise</option><option value="custom">Custom</option></select></div>
+                                <div class="form-group col-half"><label for="alpha">Initial fuzzy sharpness (beta)</label><input type="number" id="alpha" value="0.1" min="0.000001" step="any"></div>
+                            </div>
+                            <div id="custom-uncertainty" class="form-row hidden">
+                                <div class="form-group col-third"><label for="soft_label_pos">Positive label</label><input type="number" id="soft_label_pos" value="0.95" min="0" max="1" step="any"></div>
+                                <div class="form-group col-third"><label for="soft_label_neg">Negative label</label><input type="number" id="soft_label_neg" value="0.05" min="0" max="1" step="any"></div>
+                                <div class="form-group col-third"><label for="noise_level">Noise probability</label><input type="number" id="noise_level" value="0" min="0" max="1" step="any"></div>
+                            </div>
+                        </div>
+                            </div>
+                        </details>
+                        <div id="form-error" class="inline-error hidden" role="alert" aria-live="assertive"></div>
+                        <div class="form-actions"><button class="btn btn-primary" id="run-button" type="submit">Run real benchmark</button></div>
+                    </form>
+                </div>
+
+                <div class="card glassmorphism col-span-4 measure-card">
+                    <div class="card-header"><span class="step-pill teal">02 · MEASURE</span><h3>A complete evidence set</h3><p>One run, four complementary views.</p></div>
+                    <div class="model-info-body">
+                        <div class="info-item"><h4>Link prediction</h4><p>Filtered MR, MRR, and genuine Hits@1/3/10 ranks.</p></div>
+                        <div class="info-item"><h4>Triple classification</h4><p>Precision, recall, and F1 using a validation-derived threshold.</p></div>
+                        <div class="info-item"><h4>Uncertainty quality</h4><p>MSE, MAE, ECE, Brier score, and soft-label negative log-likelihood.</p></div>
+                        <div class="info-item"><h4>Cost and provenance</h4><p>Training/evaluation time, device, configuration hash, code hash, and dataset hash.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div id="console-panel" class="card console-card hidden">
+                <div class="console-header"><div class="console-title"><span class="pulse-indicator"></span><span id="console-title">Executing benchmark…</span></div><span id="run-status" class="badge badge-warning">queued</span></div>
+                <div class="console-body" id="console-logs" role="log" aria-live="polite" aria-relevant="additions"></div>
+            </div>
+        </section>
+
+        <section id="results-section" class="tab-content" role="tabpanel">
+            <div id="no-results-view" class="card glassmorphism centered-card"><h3>No run selected</h3><p>Complete a benchmark or select a tracked run.</p></div>
+            <div id="results-view" class="hidden">
+                <div class="result-heading"><div><span class="eyebrow" id="result-id">RUN</span><h3 id="result-name">—</h3><p id="result-subtitle">—</p></div><span id="result-status" class="badge">—</span></div>
+                <div class="metric-grid" id="metric-grid"></div>
+                <div class="grid-layout">
+                    <div class="card glassmorphism col-span-6"><div class="card-header"><h3>Execution metadata</h3></div><dl class="metadata-list" id="execution-metadata"></dl></div>
+                    <div class="card glassmorphism col-span-6"><div class="card-header"><h3>Reproducibility fingerprints</h3></div><dl class="metadata-list" id="fingerprint-metadata"></dl></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tracking-section" class="tab-content{% if initial_section == 'tracking-section' %} active{% endif %}" role="tabpanel">
+            <div class="card glassmorphism">
+                <div class="card-header table-filters">
+                    <div><h3>Experiment tracking</h3><p>Select two to four completed runs to compare their evidence, or select runs to remove them.</p></div>
+                    <div class="filter-controls">
+                        <select id="filter-dataset" aria-label="Filter runs by dataset"><option value="ALL">All datasets</option><option>Synthetic</option><option>CoDEx-S</option><option>FB15k-237</option><option>WN18RR</option><option>CoDEx-M</option><option>FB15k</option><option>YAGO3-10</option></select>
+                        <select id="filter-model" aria-label="Filter runs by model"><option value="ALL">All models</option><option>TransE</option><option>FuzzyTransE</option></select>
+                        <button class="btn btn-primary btn-sm" id="compare-button" type="button" disabled>Compare selected</button>
+                        <a class="btn btn-secondary btn-sm" href="/api/runs.csv">Export CSV</a>
+                        <button class="btn btn-danger-outline btn-sm" id="delete-selected-button" type="button" disabled>Delete selected</button>
+                        <button class="btn btn-danger btn-sm" id="delete-all-button" type="button">Delete all</button>
+                    </div>
+                </div>
+                <div id="tracking-message" class="tracking-message hidden" role="status"></div>
+                <div id="comparison-panel" class="comparison-panel hidden"></div>
+                <div class="table-container"><table class="dashboard-table"><caption class="sr-only">Tracked experiment runs and evaluation metrics</caption><thead><tr><th><span class="sr-only">Select</span></th><th>ID</th><th>Created</th><th>Name</th><th>Model</th><th>Dataset</th><th>Seed</th><th>Protocol</th><th>MRR</th><th>Hits@10</th><th>ECE</th><th>F1</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody id="run-table-body"></tbody></table></div>
+            </div>
+        </section>
+    </main>
+</div>
+<div class="delete-modal hidden" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+    <div class="delete-modal-backdrop" id="delete-modal-backdrop"></div>
+    <div class="delete-modal-card">
+        <span class="delete-modal-icon" aria-hidden="true">!</span>
+        <h3 id="delete-modal-title">Delete experiment runs?</h3>
+        <p id="delete-modal-copy">This removes the selected database records and their stored run artifacts.</p>
+        <p class="delete-modal-note">This action cannot be undone. Queued and running experiments are protected.</p>
+        <div id="delete-modal-error" class="delete-modal-error hidden"></div>
+        <div class="delete-modal-actions">
+            <button class="btn btn-secondary" id="delete-cancel-button" type="button">Cancel</button>
+            <button class="btn btn-danger" id="delete-confirm-button" type="button">Delete</button>
+        </div>
+    </div>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

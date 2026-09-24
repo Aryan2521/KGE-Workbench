@@ -1,0 +1,12 @@
+{
+  "id": "example_model",
+  "name": "Example model",
+  "version": "1.0.0",
+  "description": "Replace this description with the model's purpose.",
+  "entrypoint": "adapter.py:ModelAdapter",
+  "score_direction": "higher",
+  "capabilities": {"training": true, "score_triples": true, "predict_confidence": false, "save_checkpoint": true},
+  "parameters": {
+    "dropout": {"label": "Dropout", "type": "number", "default": 0.2, "minimum": 0, "maximum": 1, "step": 0.05}
+  }
+}

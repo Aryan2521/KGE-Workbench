@@ -1,0 +1,1 @@
+{"id":"CoDEx-S","name":"CoDEx-S","version":"thesis-new-1","description":"Compact Wikidata-derived knowledge graph.","entrypoint":"builtin_plugins:ThesisDatasetAdapter","thesis_files":["utils.py"],"features":["triples","entity_ids","relation_ids","train_split","validation_split","test_split"],"parameters":{}}

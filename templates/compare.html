@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Comparison | ReproKGE</title>
+    <link rel="stylesheet" href="/static/compare.css">
+</head>
+<body>
+    <a class="skip-link" href="#comparison-main">Skip to comparison</a>
+    <header class="compare-nav">
+        <a class="compare-brand" href="/" aria-label="ReproKGE home"><span class="brand-mark"></span><span><strong>ReproKGE</strong><small>Evaluation Framework</small></span></a>
+        <nav><a href="/experiment">New experiment</a><a class="nav-primary" href="/tracking">← Back to tracked runs</a></nav>
+    </header>
+
+    <main class="compare-main" id="comparison-main" tabindex="-1">
+        <div id="comparison-loading" class="comparison-loading" role="status" aria-live="polite" aria-busy="true">
+            <div class="comparison-skeleton" aria-hidden="true">
+                <span class="skeleton-line wide"></span><span class="skeleton-line short"></span>
+                <div class="skeleton-cards"><span></span><span></span><span></span></div>
+            </div>
+            <strong>Building comparison</strong><small>Loading metrics and dataset evidence.</small>
+        </div>
+        <div id="comparison-error" class="comparison-error hidden"><h1>Comparison unavailable</h1><p id="comparison-error-message"></p><a href="/tracking">Choose two to four completed runs</a></div>
+
+        <div id="comparison-content" class="hidden">
+            <section class="compare-heading">
+                <div><span class="eyebrow">RUN COMPARISON</span><h1>Evidence, side by side.</h1><p>Compare two to four runs across ranking, calibration, runtime, protocol, and dataset context.</p></div>
+                <span class="comparison-id" id="comparison-id">—</span>
+            </section>
+
+            <section class="run-pair" id="run-pair" aria-label="Selected runs"></section>
+            <section class="protocol-status" id="protocol-status" aria-live="polite"></section>
+
+            <section class="insight-grid" id="insight-grid" aria-label="Comparison summary"></section>
+
+            <section class="compare-section" aria-labelledby="performance-title">
+                <div class="section-heading"><div><h2 id="performance-title">Performance comparison</h2></div><p>Bars share a scale within each metric.</p></div>
+                <div class="chart-grid">
+                    <article class="chart-card"><div class="chart-title"><h3>Ranking & classification</h3><span>Higher is better</span></div><div id="ranking-chart" class="metric-chart"></div></article>
+                    <article class="chart-card"><div class="chart-title"><h3>Calibration error</h3><span class="lower">Lower is better</span></div><div id="calibration-chart" class="metric-chart"></div></article>
+                    <article class="chart-card timing-card"><div class="chart-title"><h3>Execution time</h3><span class="lower">Lower is better</span></div><div id="timing-chart" class="metric-chart"></div></article>
+                </div>
+            </section>
+
+            <section class="compare-section" aria-labelledby="dataset-title">
+                <div class="section-heading"><div><h2 id="dataset-title">Dataset context</h2></div><p>Counts are read from the exact thesis split files or recorded run metadata.</p></div>
+                <div class="dataset-grid" id="dataset-grid"></div>
+            </section>
+
+            <section class="compare-section" aria-labelledby="metric-table-title">
+                <div class="section-heading"><div><h2 id="metric-table-title">Complete metric table</h2></div><p>Use direction labels when interpreting differences.</p></div>
+                <div class="metric-table-wrap"><table class="metric-table"><caption class="sr-only">All recorded metrics for the selected runs</caption><thead id="metric-table-head"></thead><tbody id="metric-table-body"></tbody></table></div>
+            </section>
+        </div>
+    </main>
+    <script src="/static/compare.js"></script>
+</body>
+</html>

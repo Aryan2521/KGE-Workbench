@@ -1,0 +1,1 @@
+{"id":"WN18RR","name":"WN18RR","version":"thesis-new-1","description":"WordNet lexical knowledge graph benchmark.","entrypoint":"builtin_plugins:ThesisDatasetAdapter","thesis_files":["utils.py"],"features":["triples","entity_ids","relation_ids","train_split","validation_split","test_split"],"parameters":{}}

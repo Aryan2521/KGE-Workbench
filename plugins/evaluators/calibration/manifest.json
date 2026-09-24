@@ -1,0 +1,17 @@
+{
+  "id": "calibration",
+  "name": "Confidence calibration",
+  "version": "1.0.0",
+  "description": "Measures confidence quality against the selected uncertainty protocol.",
+  "entrypoint": "builtin_evaluators:CalibrationEvaluator",
+  "required_model_capabilities": ["predict_confidence"],
+  "required_dataset_features": ["triples", "entity_ids", "test_split"],
+  "metrics": {
+    "mse": {"label": "MSE", "direction": "lower"},
+    "mae": {"label": "MAE", "direction": "lower"},
+    "ece": {"label": "ECE", "direction": "lower"},
+    "brier": {"label": "Brier", "direction": "lower"},
+    "nll": {"label": "NLL", "direction": "lower"}
+  },
+  "parameters": {}
+}

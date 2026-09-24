@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.env
+.env.*
+!.env.example
+benchmark_results.db
+benchmark_results.db-shm
+benchmark_results.db-wal
+artifacts/run-*/
+.coverage
+.pytest_cache/

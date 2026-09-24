@@ -1,0 +1,16 @@
+{
+  "id": "example_evaluator",
+  "name": "Example evaluator",
+  "version": "1.0.0",
+  "description": "Replace this with a description of the benchmark or evaluation task.",
+  "entrypoint": "adapter.py:EvaluatorAdapter",
+  "required_model_capabilities": ["score_triples"],
+  "required_dataset_features": ["triples", "test_split"],
+  "metrics": {
+    "example_score": {
+      "label": "Example score",
+      "direction": "higher"
+    }
+  },
+  "parameters": {}
+}

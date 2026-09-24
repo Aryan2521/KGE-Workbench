@@ -1,0 +1,17 @@
+{
+  "id": "link_prediction",
+  "name": "Filtered link prediction",
+  "version": "1.0.0",
+  "description": "Ranks the correct head and tail against all candidate entities.",
+  "entrypoint": "builtin_evaluators:LinkPredictionEvaluator",
+  "required_model_capabilities": ["score_triples"],
+  "required_dataset_features": ["triples", "entity_ids", "relation_ids", "test_split"],
+  "metrics": {
+    "mean_rank": {"label": "Mean Rank", "direction": "lower"},
+    "mrr": {"label": "MRR", "direction": "higher"},
+    "hits_at_1": {"label": "Hits@1", "direction": "higher"},
+    "hits_at_3": {"label": "Hits@3", "direction": "higher"},
+    "hits_at_10": {"label": "Hits@10", "direction": "higher"}
+  },
+  "parameters": {}
+}
